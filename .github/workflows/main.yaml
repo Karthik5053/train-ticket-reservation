@@ -23,12 +23,33 @@ jobs:
       - name: package with maven
         run: mvn package
      
-        # Deploy to Tomcat
+        # Deploy to Tomcat-Dev
       - name: deploy war to tomcat
         run: | 
-                curl -v -u ${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }} \
+                curl -v -u ${{ secrets.TOMCAT_USER_Dev }}:${{ secrets.TOMCAT_PASSWORD_Dev }} \
                   -T target/TrainBook-1.0.0-SNAPSHOT.war \
-                  "http://${{ secrets.TOMCAT_HOST }}:8080/manager/text/deploy?path=/TrainBook&update=true"
+                  "http://${{ secrets.TOMCAT_HOST_Dev }}:8080/manager/text/deploy?path=/TrainBook&update=true"
+        
+        # Deploy to Tomcat-test
+      - name: deploy war to tomcat
+        run: | 
+                curl -v -u ${{ secrets.TOMCAT_USER_test }}:${{ secrets.TOMCAT_PASSWORD_test }} \
+                  -T target/TrainBook-1.0.0-SNAPSHOT.war \
+                  "http://${{ secrets.TOMCAT_HOST_test }}:8080/manager/text/deploy?path=/TrainBook&update=true"
  
      
-     
+     # Deploy to Tomcat
+      - name: deploy war to tomcat
+        run: | 
+                curl -v -u ${{ secrets.TOMCAT_USER_Pre_Prod }}:${{ secrets.TOMCAT_PASSWORD_Pre_Prod }} \
+                  -T target/TrainBook-1.0.0-SNAPSHOT.war \
+                  "http://${{ secrets.TOMCAT_HOST_Pre_Prod }}:8080/manager/text/deploy?path=/TrainBook&update=true"
+
+
+    # Deploy to Tomcat
+      - name: deploy war to tomcat
+        run: | 
+                curl -v -u ${{ secrets.TOMCAT_USER_Prod }}:${{ secrets.TOMCAT_PASSWORD_prod }} \
+                  -T target/TrainBook-1.0.0-SNAPSHOT.war \
+                  "http://${{ secrets.TOMCAT_HOST_prod }}:8080/manager/text/deploy?path=/TrainBook&update=true"
+ 
