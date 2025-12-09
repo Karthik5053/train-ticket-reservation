@@ -56,12 +56,12 @@ jobs:
         USER: ${{ secrets.TOMCAT_USER_DEV }}
         PASS: ${{ secrets.TOMCAT_PASSWORD_DEV }}
       run: |
-        WAR_FILE=$(ls *.war | head -n 1)
-        echo "Deploying $WAR_FILE to $URL"
+        WAR=$(ls *.war | head -n 1)
 
         curl -v -u "$USER:$PASS" \
-          -T "$WAR_FILE" \
+          -T "$WAR" \
           "$URL/deploy?path=/TrainBook&update=true"
+
   # -------------------------------------------------
   #              DEPLOY TO TEST
   # -------------------------------------------------
