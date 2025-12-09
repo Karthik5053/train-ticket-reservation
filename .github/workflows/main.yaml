@@ -41,22 +41,27 @@ jobs:
   #              DEPLOY TO DEV
   # -------------------------------------------------
   deploy-dev:
-    needs: build-deploy
-    runs-on: ubuntu-latest
+   needs: build-deploy
+   runs-on: ubuntu-latest
 
-    steps:
-      - name: download war
-        uses: actions/download-artifact@v4
-        with:
-          name: warfile
+   steps:
+    - name: download war
+      uses: actions/download-artifact@v4
+      with:
+        name: warfile
 
-      - name: deploy war to tomcat (DEV)
-        run: |
-          curl -v -u ${{ secrets.TOMCAT_USER_DEV }}:${{ secrets.TOMCAT_PASSWORD_DEV }} \
-            -T TrainBook-1.0.0-SNAPSHOT.war \
-            "http://${{ secrets.TOMCAT_HOST_DEV }}:8080/manager/text/deploy?path=/TrainBook&update=true"
+    - name: deploy war to tomcat (DEV)
+      env:
+        URL: ${{ secrets.TOMCAT_URL_DEV }}
+        USER: ${{ secrets.TOMCAT_USER_DEV }}
+        PASS: ${{ secrets.TOMCAT_PASSWORD_DEV }}
+      run: |
+        WAR_FILE=$(ls *.war | head -n 1)
+        echo "Deploying $WAR_FILE to $URL"
 
-
+        curl -v -u "$USER:$PASS" \
+          -T "$WAR_FILE" \
+          "$URL/deploy?path=/TrainBook&update=true"
   # -------------------------------------------------
   #              DEPLOY TO TEST
   # -------------------------------------------------
