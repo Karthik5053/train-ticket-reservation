@@ -30,3 +30,15 @@ jobs:
 
       - name: package with maven
         run: mvn clean package
+        
+      - name: verify War file
+        run: ls -lh target/
+
+      - name: Bulid, Test and SonarQube Scan
+        run: |
+          mvn clean verify sonar:sonar \
+          -Dsonar.projectKey=train-ticket \
+          -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" 
+          -Dsonar.login="${{ secrets. SONAR_TOKEN }}
+        
+        
