@@ -60,4 +60,18 @@ jobs:
         run: |
             mvn deploy -DaltDeploymentRepository=nexus::default::${{ secrets.NEXUS_REPO_URL }}
 
+      - name: Check Tomcat connection
+        run: |
+          curl --fail --anyauth \
+          -u "${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }}" \
+          "http://${{ secrets.TOMCAT_HOST }}:8080/manager/text/list"
+
+      - name: Deploy war to Tomcat
+        run: |
+         curl -v \
+         -u "${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }}" \
+         -T target/TrainBook-1.0.0-SNAPSHOT.war \
+         "http://${{ secrets.TOMCAT_HOST }}:8080/manager/text/deploy?path=/TrainBook&update=true"
+
+
         
