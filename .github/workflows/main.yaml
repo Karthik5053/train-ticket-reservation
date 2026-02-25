@@ -33,7 +33,7 @@ jobs:
       - name: verify WAR file
         run: ls -lh target/
 
-            - name: Deploy war to Tomcat
+      - name: Deploy war to Tomcat
         run: |
          curl -v \
          -u "${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }}" \
